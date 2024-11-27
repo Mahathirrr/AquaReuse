@@ -1,12 +1,19 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { UserCircle, Bell, Languages, Settings2, LogOut } from "lucide-react";
 import ProfileSettings from "./settings/ProfileSettings";
 import NotificationSettings from "./settings/NotificationSettings";
+import LanguageSettings from "./settings/LanguageSettings";
 import AppSettings from "./settings/AppSettings";
 
 function Settings() {
-  const [activeSection, setActiveSection] = React.useState(null);
+  const [activeSection, setActiveSection] = useState(null);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const handleLogout = () => {
+    // Add your logout logic here
+    console.log("Logging out...");
+  };
 
   const renderContent = () => {
     switch (activeSection) {
@@ -14,6 +21,8 @@ function Settings() {
         return <ProfileSettings />;
       case "notifications":
         return <NotificationSettings />;
+      case "language":
+        return <LanguageSettings />;
       case "app":
         return <AppSettings />;
       default:
@@ -83,7 +92,10 @@ function Settings() {
               <p className="text-sm text-gray-600">Version 1.0.0</p>
             </div>
 
-            <button className="w-full bg-red-50 text-red-600 py-3 rounded-xl font-medium flex items-center justify-center space-x-2">
+            <button
+              onClick={() => setShowLogoutConfirm(true)}
+              className="w-full bg-red-50 text-red-600 py-3 rounded-xl font-medium flex items-center justify-center space-x-2"
+            >
               <LogOut className="w-5 h-5" />
               <span>Sign Out</span>
             </button>
@@ -94,6 +106,45 @@ function Settings() {
 
   return (
     <div className="p-4">
+      <AnimatePresence>
+        {showLogoutConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              className="bg-white rounded-xl p-6 w-full max-w-sm"
+            >
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                Sign Out
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to sign out?
+              </p>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowLogoutConfirm(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

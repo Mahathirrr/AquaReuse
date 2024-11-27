@@ -7,7 +7,10 @@ import {
   LightBulbIcon,
   CalendarIcon,
   ClockIcon,
+  BookOpenIcon,
+  BeakerIcon,
 } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 import Logo from "../assets/Logo";
 import WaterQualityCard from "./dashboard/WaterQualityCard";
 import TipsCard from "./dashboard/TipsCard";
@@ -15,6 +18,24 @@ import StatsGrid from "./dashboard/StatsGrid";
 import NextAnalysisCard from "./dashboard/NextAnalysisCard";
 
 function Dashboard() {
+  const navigate = useNavigate();
+
+  const handleQuickAction = (action) => {
+    switch (action) {
+      case "analysis":
+        navigate("/analysis");
+        break;
+      case "guidelines":
+        navigate("/guide");
+        break;
+      case "statistics":
+        navigate("/history");
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="p-4 space-y-4">
       <motion.div
@@ -81,14 +102,26 @@ function Dashboard() {
       >
         <h3 className="font-semibold text-gray-800 mb-3">Quick Actions</h3>
         <div className="space-y-3">
-          <button className="w-full bg-blue-50 text-blue-700 py-3 px-4 rounded-lg text-left font-medium hover:bg-blue-100 transition-colors">
-            Start New Analysis
+          <button
+            onClick={() => handleQuickAction("analysis")}
+            className="w-full bg-blue-50 text-blue-700 py-3 px-4 rounded-lg text-left font-medium hover:bg-blue-100 transition-colors flex items-center space-x-2"
+          >
+            <BeakerIcon className="h-5 w-5" />
+            <span>Start New Analysis</span>
           </button>
-          <button className="w-full bg-gray-50 text-gray-700 py-3 px-4 rounded-lg text-left font-medium hover:bg-gray-100 transition-colors">
-            View Guidelines
+          <button
+            onClick={() => handleQuickAction("guidelines")}
+            className="w-full bg-gray-50 text-gray-700 py-3 px-4 rounded-lg text-left font-medium hover:bg-gray-100 transition-colors flex items-center space-x-2"
+          >
+            <BookOpenIcon className="h-5 w-5" />
+            <span>View Guidelines</span>
           </button>
-          <button className="w-full bg-gray-50 text-gray-700 py-3 px-4 rounded-lg text-left font-medium hover:bg-gray-100 transition-colors">
-            Check Statistics
+          <button
+            onClick={() => handleQuickAction("statistics")}
+            className="w-full bg-gray-50 text-gray-700 py-3 px-4 rounded-lg text-left font-medium hover:bg-gray-100 transition-colors flex items-center space-x-2"
+          >
+            <ChartBarIcon className="h-5 w-5" />
+            <span>Check Statistics</span>
           </button>
         </div>
       </motion.div>
@@ -97,4 +130,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
