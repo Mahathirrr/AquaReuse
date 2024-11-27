@@ -12,10 +12,9 @@ export default defineConfig({
   server: {
     open: true, // Membuka browser otomatis saat server berjalan
     host: true, // Mendukung jaringan lokal
-    port: 3000, // Tentukan port (opsional)
+    port: 3002, // Tentukan port (opsional)
   },
   build: {
     outDir: "dist", // Output build folder
   },
 });
-
