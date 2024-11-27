@@ -1,23 +1,17 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  ArrowPathIcon,
-  BeakerIcon,
-  ChartBarIcon,
-  BookOpenIcon,
-  Cog6ToothIcon,
-} from "./icons";
+import { navigationIcons } from "./icons/NavigationIcons";
 
 function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
 
   const navItems = [
-    { path: "/", icon: ArrowPathIcon, label: "Home" },
-    { path: "/analysis", icon: BeakerIcon, label: "Analysis" },
-    { path: "/history", icon: ChartBarIcon, label: "History" },
-    { path: "/guide", icon: BookOpenIcon, label: "Guide" },
-    { path: "/settings", icon: Cog6ToothIcon, label: "Settings" },
+    { path: "/dashboard", icon: navigationIcons.Home, label: "Home" },
+    { path: "/analysis", icon: navigationIcons.Analysis, label: "Analysis" },
+    { path: "/history", icon: navigationIcons.History, label: "History" },
+    { path: "/rewards", icon: navigationIcons.Rewards, label: "Rewards" },
+    { path: "/settings", icon: navigationIcons.Settings, label: "Settings" },
   ];
 
   return (
@@ -55,4 +49,3 @@ function BottomNav() {
 }
 
 export default BottomNav;
-

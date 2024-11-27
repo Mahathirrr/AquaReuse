@@ -36,9 +36,8 @@ function App() {
               "/dashboard",
               "/analysis",
               "/history",
-              "/guide",
-              "/settings",
               "/rewards",
+              "/settings",
             ].map((path) => (
               <Route key={path} path={path} element={<BottomNav />} />
             ))}
@@ -50,4 +49,3 @@ function App() {
 }
 
 export default App;
-

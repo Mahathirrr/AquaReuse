@@ -1,18 +1,36 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { UserCircle, Bell, Languages, Settings2, LogOut } from "lucide-react";
+import {
+  UserCircle,
+  Bell,
+  Languages,
+  Settings2,
+  LogOut,
+  ArrowLeft,
+} from "lucide-react";
 import ProfileSettings from "./settings/ProfileSettings";
 import NotificationSettings from "./settings/NotificationSettings";
 import LanguageSettings from "./settings/LanguageSettings";
 import AppSettings from "./settings/AppSettings";
+import { useNavigate } from "react-router-dom";
 
 function Settings() {
   const [activeSection, setActiveSection] = useState(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     // Add your logout logic here
     console.log("Logging out...");
+    navigate("/auth");
+  };
+
+  const handleBack = () => {
+    if (activeSection) {
+      setActiveSection(null);
+    } else {
+      navigate(-1);
+    }
   };
 
   const renderContent = () => {
@@ -145,24 +163,15 @@ function Settings() {
         )}
       </AnimatePresence>
 
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="mb-6 flex items-center justify-between"
-      >
+      <div className="flex items-center space-x-3 mb-6">
+        <button onClick={handleBack} className="p-2">
+          <ArrowLeft className="w-6 h-6 text-gray-600" />
+        </button>
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Settings</h1>
           <p className="text-gray-600">Manage your preferences</p>
         </div>
-        {activeSection && (
-          <button
-            onClick={() => setActiveSection(null)}
-            className="text-blue-500 font-medium"
-          >
-            Back
-          </button>
-        )}
-      </motion.div>
+      </div>
 
       {renderContent()}
     </div>
