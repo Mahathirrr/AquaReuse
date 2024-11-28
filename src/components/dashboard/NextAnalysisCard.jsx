@@ -17,7 +17,7 @@ export default function NextAnalysisCard() {
       time: scheduleData.time,
       repeat: scheduleData.repeat,
     });
-    // Here you would typically save to backend
+    setShowScheduler(false);
   };
 
   return (
