@@ -26,7 +26,7 @@ export default function RegisterScreen() {
 
   const onSubmit = (data) => {
     console.log(data);
-    navigate("/dashboard");
+    navigate("/welcome");
   };
 
   return (

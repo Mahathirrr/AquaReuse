@@ -23,7 +23,7 @@ export default function LoginScreen() {
 
   const onSubmit = (data) => {
     console.log(data);
-    navigate("/dashboard");
+    navigate("/welcome");
   };
 
   return (

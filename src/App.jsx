@@ -4,9 +4,10 @@ import SplashScreen from "./components/auth/SplashScreen";
 import AuthScreen from "./components/auth/AuthScreen";
 import LoginScreen from "./components/auth/LoginScreen";
 import RegisterScreen from "./components/auth/RegisterScreen";
+import WelcomeGuide from "./components/onboarding/WelcomeGuide";
 import Dashboard from "./components/Dashboard";
 import WaterAnalysis from "./components/WaterAnalysis";
-import History from "./components/History";
+import EnhancedHistory from "./components/statistics/EnhancedHistory";
 import Guide from "./components/Guide";
 import Settings from "./components/Settings";
 import RewardsScreen from "./components/rewards/RewardsScreen";
@@ -23,9 +24,10 @@ function App() {
               <Route path="/auth" element={<AuthScreen />} />
               <Route path="/login" element={<LoginScreen />} />
               <Route path="/register" element={<RegisterScreen />} />
+              <Route path="/welcome" element={<WelcomeGuide />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/analysis" element={<WaterAnalysis />} />
-              <Route path="/history" element={<History />} />
+              <Route path="/history" element={<EnhancedHistory />} />
               <Route path="/guide" element={<Guide />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/rewards" element={<RewardsScreen />} />

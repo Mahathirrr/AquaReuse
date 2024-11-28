@@ -1,77 +1,172 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import {
+  Droplets,
+  Recycle,
+  Award,
+  ChevronRight,
+  CheckCircle,
+} from "lucide-react";
+
+const slides = [
+  {
+    id: "welcome",
+    icon: Droplets,
+    title: "Welcome to AquaReuse",
+    description: "Your smart companion for sustainable water management",
+    color: "blue",
+    features: [
+      "Smart water quality analysis",
+      "Personalized recommendations",
+      "Track your sustainability impact",
+    ],
+  },
+  {
+    id: "analysis",
+    icon: Recycle,
+    title: "Water Analysis Made Easy",
+    description: "Get instant insights about your water quality",
+    color: "green",
+    steps: [
+      "Take a photo of your water sample",
+      "Our AI analyzes the quality instantly",
+      "Receive reuse recommendations",
+    ],
+  },
+  {
+    id: "rewards",
+    icon: Award,
+    title: "Earn While Saving",
+    description: "Get rewarded for your sustainable practices",
+    color: "purple",
+    benefits: [
+      "Earn points for each analysis",
+      "Complete sustainability challenges",
+      "Unlock special achievements",
+    ],
+  },
+];
 
 export default function WelcomeGuide() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState([]);
   const navigate = useNavigate();
-  const { isNewUser } = useAuth();
 
-  const handleComplete = () => {
-    navigate("/dashboard");
+  const handleNext = () => {
+    if (currentSlide < slides.length - 1) {
+      setCurrentSlide((prev) => prev + 1);
+      setCompletedSteps((prev) => [...prev, slides[currentSlide].id]);
+    } else {
+      navigate("/dashboard");
+    }
   };
 
-  if (!isNewUser) {
-    navigate("/dashboard");
-    return null;
-  }
-
   return (
-    <div className="min-h-screen bg-white flex flex-col justify-center p-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="space-y-6"
-      >
-        <div className="p-6 bg-white rounded-xl shadow-sm space-y-6">
-          <h3 className="text-lg font-semibold text-gray-800">
-            Getting Started
-          </h3>
-          <div className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-blue-600 text-sm">1</span>
-              </div>
-              <div>
-                <p className="font-medium text-gray-800">Take a Photo</p>
-                <p className="text-sm text-gray-600">
-                  Capture or upload an image of your water sample
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-green-600 text-sm">2</span>
-              </div>
-              <div>
-                <p className="font-medium text-gray-800">Get Analysis</p>
-                <p className="text-sm text-gray-600">
-                  Our AI will analyze the water quality instantly
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-purple-600 text-sm">3</span>
-              </div>
-              <div>
-                <p className="font-medium text-gray-800">
-                  Follow Recommendations
-                </p>
-                <p className="text-sm text-gray-600">
-                  Get personalized suggestions for water reuse
-                </p>
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={handleComplete}
-            className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium"
+    <div className="min-h-screen bg-white flex flex-col">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          className="flex-1 flex flex-col items-center justify-center p-8"
+        >
+          <motion.div
+            className={`p-6 rounded-full bg-${slides[currentSlide].color}-100 mb-8`}
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
           >
-            Got it
-          </button>
+            {React.createElement(slides[currentSlide].icon, {
+              className: `w-16 h-16 text-${slides[currentSlide].color}-500`,
+              strokeWidth: 1.5,
+            })}
+          </motion.div>
+
+          <h1 className="text-2xl font-bold text-gray-800 text-center mb-4">
+            {slides[currentSlide].title}
+          </h1>
+          <p className="text-gray-600 text-center mb-8 max-w-xs">
+            {slides[currentSlide].description}
+          </p>
+
+          <div className="w-full max-w-xs space-y-4">
+            {slides[currentSlide].features?.map((feature, index) => (
+              <motion.div
+                key={feature}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg"
+              >
+                <CheckCircle
+                  className={`w-5 h-5 text-${slides[currentSlide].color}-500`}
+                />
+                <span className="text-gray-700">{feature}</span>
+              </motion.div>
+            ))}
+
+            {slides[currentSlide].steps?.map((step, index) => (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg"
+              >
+                <span
+                  className={`w-6 h-6 rounded-full bg-${slides[currentSlide].color}-500 text-white flex items-center justify-center text-sm font-medium`}
+                >
+                  {index + 1}
+                </span>
+                <span className="text-gray-700">{step}</span>
+              </motion.div>
+            ))}
+
+            {slides[currentSlide].benefits?.map((benefit, index) => (
+              <motion.div
+                key={benefit}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg"
+              >
+                <Award
+                  className={`w-5 h-5 text-${slides[currentSlide].color}-500`}
+                />
+                <span className="text-gray-700">{benefit}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="p-8">
+        <div className="flex justify-center space-x-2 mb-8">
+          {slides.map((_, index) => (
+            <div
+              key={index}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === currentSlide
+                  ? "bg-blue-500"
+                  : completedSteps.includes(slides[index].id)
+                    ? "bg-green-500"
+                    : "bg-gray-200"
+              }`}
+            />
+          ))}
         </div>
-      </motion.div>
+
+        <button
+          onClick={handleNext}
+          className="w-full bg-blue-500 text-white py-4 rounded-xl font-medium flex items-center justify-center space-x-2"
+        >
+          <span>
+            {currentSlide === slides.length - 1 ? "Get Started" : "Next"}
+          </span>
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
     </div>
   );
 }

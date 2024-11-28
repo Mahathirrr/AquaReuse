@@ -1,30 +1,35 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { ClockIcon } from "@heroicons/react/24/solid";
+import { motion, AnimatePresence } from "framer-motion";
+import { Clock, Calendar, Bell } from "lucide-react";
+import ScheduleAnalysis from "../scheduling/ScheduleAnalysis";
 
-function NextAnalysisCard() {
-  const [showNotification, setShowNotification] = useState(false);
+export default function NextAnalysisCard() {
+  const [showScheduler, setShowScheduler] = useState(false);
+  const [nextAnalysis, setNextAnalysis] = useState({
+    date: "Today",
+    time: "4:00 PM",
+    repeat: "daily",
+  });
 
-  const handleSetReminder = () => {
-    setShowNotification(true);
-    // Here you would typically set up a real notification
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 3000);
+  const handleSchedule = (scheduleData) => {
+    setNextAnalysis({
+      date: scheduleData.date,
+      time: scheduleData.time,
+      repeat: scheduleData.repeat,
+    });
+    // Here you would typically save to backend
   };
 
   return (
     <>
-      {showNotification && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="fixed top-4 left-4 right-4 bg-green-100 text-green-800 p-4 rounded-lg shadow-md z-50"
-        >
-          Reminder set for next analysis at 4:00 PM
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {showScheduler && (
+          <ScheduleAnalysis
+            onClose={() => setShowScheduler(false)}
+            onSchedule={handleSchedule}
+          />
+        )}
+      </AnimatePresence>
 
       <motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -32,28 +37,37 @@ function NextAnalysisCard() {
         transition={{ delay: 0.3 }}
         className="bg-white rounded-xl p-4 shadow-sm"
       >
-        <div className="flex items-center space-x-3 mb-3">
-          <ClockIcon className="h-6 w-6 text-blue-500" />
-          <h3 className="font-semibold text-gray-800">
-            Next Scheduled Analysis
-          </h3>
-        </div>
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-gray-600">Today</p>
-            <p className="text-sm text-gray-500">4:00 PM</p>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <Clock className="h-6 w-6 text-blue-500" />
+            <h3 className="font-semibold text-gray-800">Next Analysis</h3>
           </div>
-          <button
-            onClick={handleSetReminder}
-            className="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
-          >
-            Set Reminder
-          </button>
+          <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded-lg text-sm">
+            {nextAnalysis.repeat}
+          </span>
         </div>
+
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <Calendar className="h-5 w-5 text-gray-400" />
+            <div>
+              <p className="text-gray-800 font-medium">{nextAnalysis.date}</p>
+              <p className="text-sm text-gray-500">{nextAnalysis.time}</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 text-gray-400">
+            <Bell className="h-5 w-5" />
+            <span className="text-sm">15m before</span>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setShowScheduler(true)}
+          className="w-full bg-blue-50 text-blue-600 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+        >
+          Reschedule
+        </button>
       </motion.div>
     </>
   );
 }
-
-export default NextAnalysisCard;
-
