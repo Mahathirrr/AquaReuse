@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 // Vite config
 export default defineConfig({
   plugins: [react()],
+  base: "/AquaReuse/",
   resolve: {
     alias: {
       "@": "/src", // Alias untuk src
@@ -12,7 +13,7 @@ export default defineConfig({
   server: {
     open: true, // Membuka browser otomatis saat server berjalan
     host: true, // Mendukung jaringan lokal
-    port: 3002, // Tentukan port (opsional)
+    port: 3000, // Tentukan port (opsional)
   },
   build: {
     outDir: "dist", // Output build folder
