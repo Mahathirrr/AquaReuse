@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { LogIn, UserPlus } from "lucide-react";
+import { LogIn, UserPlus, Briefcase } from "lucide-react";
 
 export default function AuthScreen() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function AuthScreen() {
         className="flex-1 flex flex-col items-center justify-center"
       >
         <h1 className="text-3xl font-bold text-gray-800 text-center mb-4">
-          Welcome Back
+          Welcome to AquaReuse
         </h1>
         <p className="text-gray-600 text-center mb-12">
           Choose how you want to continue
@@ -31,7 +31,14 @@ export default function AuthScreen() {
             className="w-full bg-white border-2 border-blue-500 text-blue-500 py-4 rounded-xl font-medium flex items-center justify-center space-x-3"
           >
             <UserPlus className="w-5 h-5" />
-            <span>Create Account</span>
+            <span>Register as UMKM</span>
+          </button>
+          <button
+            onClick={() => navigate("/register-professional")}
+            className="w-full bg-white border-2 border-green-500 text-green-500 py-4 rounded-xl font-medium flex items-center justify-center space-x-3"
+          >
+            <Briefcase className="w-5 h-5" />
+            <span>Register as Professional</span>
           </button>
         </div>
       </motion.div>
