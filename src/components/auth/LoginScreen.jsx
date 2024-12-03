@@ -5,10 +5,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowLeft } from "lucide-react";
+import { USER_ROLES } from "../../constants/userRoles";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  role: z.enum([
+    USER_ROLES.UMKM,
+    USER_ROLES.HEALTH_OFFICIAL,
+    USER_ROLES.CHEMICAL_EXPERT,
+  ]),
 });
 
 export default function LoginScreen() {
@@ -22,8 +28,17 @@ export default function LoginScreen() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
-    navigate("/welcome");
+    // Redirect based on user role
+    switch (data.role) {
+      case USER_ROLES.HEALTH_OFFICIAL:
+        navigate("/health-dashboard");
+        break;
+      case USER_ROLES.CHEMICAL_EXPERT:
+        navigate("/chemical-dashboard");
+        break;
+      default:
+        navigate("/dashboard");
+    }
   };
 
   return (
@@ -75,6 +90,27 @@ export default function LoginScreen() {
               <p className="mt-1 text-sm text-red-600">
                 {errors.password.message}
               </p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Login As
+            </label>
+            <select
+              {...register("role")}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value={USER_ROLES.UMKM}>UMKM Owner</option>
+              <option value={USER_ROLES.HEALTH_OFFICIAL}>
+                Health Department Official
+              </option>
+              <option value={USER_ROLES.CHEMICAL_EXPERT}>
+                Chemical Expert
+              </option>
+            </select>
+            {errors.role && (
+              <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>
             )}
           </div>
 
